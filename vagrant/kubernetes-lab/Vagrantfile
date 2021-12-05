@@ -1,0 +1,38 @@
+Vagrant.configure("2") do |config|
+
+  config.vm.box = "ubuntu/bionic64"
+  config.hostmanager.enabled = true
+  config.hostmanager.manage_host = true
+  config.hostmanager.manage_guest = true
+  config.hostmanager.ignore_private_ip = false
+  config.hostmanager.include_offline = true
+
+  config.vm.define "k8smaster" do |k8smaster|
+    k8smaster.vm.hostname = "k8smaster"
+    k8smaster.vm.network "private_network", ip: "192.168.33.10"
+    
+    k8smaster.vm.provider "virtualbox" do |vb|
+      vb.cpus = 2
+      vb.memory = 8192
+    end
+    
+    k8smaster.vm.provision "shell", inline: <<-SHELL
+      apt-get update -y
+    SHELL
+  end
+
+  config.vm.define "worker01" do |worker01|
+    worker01.vm.hostname = "worker01"
+    worker01.vm.network "private_network", ip: "192.168.33.11"
+    
+    worker01.vm.provider "virtualbox" do |vb|
+      vb.cpus = 1
+      vb.memory = 2048
+    end
+
+    worker01.vm.provision "shell", inline: <<-SHELL
+      apt-get update -y
+    SHELL
+  end
+
+end
