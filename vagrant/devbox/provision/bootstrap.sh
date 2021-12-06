@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 # Upgrade packages
-apt-get update -y
-apt-get upgrade -y
+apt update -y
+apt upgrade -y
 
 # Git and Vim Configuration
 cd /home/vagrant
@@ -15,3 +15,9 @@ ln -nfs "$HOME/bin/dotfiles/vim/vimrc" "$HOME/.vimrc"
 ln -nfs "$HOME/bin/dotfiles/vim/gvimrc" "$HOME/.gvimrc"
 ln -nfs "$HOME/bin/dotfiles/vim" "$HOME/.vim"
 ln -nfs "$HOME/bin/dotfiles/git/gitconfig_linux" "$HOME/.gitconfig"
+
+# Install GitHub CLI
+curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
+apt update -y
+apt install gh -y
