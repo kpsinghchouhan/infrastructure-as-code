@@ -24,7 +24,7 @@ foreach ($folder in $olderBackupFolders) {
         $firstTime = $false
         continue
     }
-    Remove-Item $folder -Recurse -Verbose -Confirm
+    Remove-Item $folder -Recurse -Force
 }
 Write-Host "Cleanup finished at: $(Get-Date)"
 # Create a new directory with today's date
