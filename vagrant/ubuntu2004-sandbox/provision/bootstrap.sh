@@ -4,7 +4,7 @@ set -x
 apt update -y
 apt upgrade -y
 # Install KVM
-apt-get install -y qemu-kvm libvirt-bin bridge-utils virtinst virt-manager
+#apt-get install -y qemu-kvm libvirt-daemon-system libvirt-clients bridge-utils virtinst virt-manager
 # Install firewalld
 apt-get install -y firewalld
 # Install ftp and vsftp
