@@ -1,0 +1,52 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+require './vagrant_defaults'
+
+Vagrant.configure("2") do |config|
+
+  config.vm.synced_folder ".", "/vagrant"
+
+  config.vm.define "host01" do |host01|
+    host01.vm.box = "bento/ubuntu-20.04"
+    host01.vm.provider "virtualbox" do |vb|
+      vb.cpus = 1
+      vb.memory = 1024
+      vb.name = "host01"
+    end
+    host01.vm.hostname = "host01" + DOMAIN
+    host01.vm.network 'private_network', ip: NETWORK + "12", netmaks: NETMASK
+    host01.vm.provision "shell", path: "provision/ubuntu-default.sh"
+    host01.vm.provision "shell", path: "provision/hosts.sh", args: [NETWORK, DOMAIN]
+    host01.vm.provision "shell", path: "provision/ansible.sh"
+  end
+
+  config.vm.define "host02" do |host02|
+    host02.vm.box = "bento/rockylinux-8"
+    host02.vm.provider "virtualbox" do |vb|
+      vb.cpus = 1
+      vb.memory = 1024
+      vb.name = "host02"
+    end
+    host02.vm.hostname = "host02" + DOMAIN
+    host02.vm.network 'private_network', ip: NETWORK + "13", netmaks: NETMASK
+    host02.vm.provision "shell", path: "provision/rocky-default.sh"
+    host02.vm.provision "shell", path: "provision/hosts.sh", args: [NETWORK, DOMAIN]
+    host02.vm.provision "shell", path: "provision/ansible.sh"
+  end
+
+  config.vm.define "ansiblecontrolserver" do |asc|
+    asc.vm.box = "bento/ubuntu-20.04"
+    asc.vm.provider "virtualbox" do |vb|
+      vb.cpus = 2
+      vb.memory = 2048
+      vb.name = "ansiblecontrolserver"
+    end
+    asc.vm.hostname = "ansiblecontrolserver" + DOMAIN
+    asc.vm.network 'private_network', ip: NETWORK + "11", netmaks: NETMASK
+    asc.vm.provision "shell", path: "provision/ubuntu-default.sh"
+    asc.vm.provision "shell", path: "provision/hosts.sh", args: [NETWORK, DOMAIN]
+    asc.vm.provision "shell", path: "provision/ansible.sh"
+  end
+
+end
