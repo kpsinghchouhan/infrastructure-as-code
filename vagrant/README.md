@@ -16,7 +16,7 @@ IP: 192.168.34.13
 
 Generate SSH keys before bringing the environment up.
 ```
-ssh-keygen -t ecdsa -f ./configs/id_ecdsa -C "vagrant@ansiblecontrolserver.lab"
+ssh-keygen -t ed25519 -f ./configs/id_ed25519 -C "vagrant@ansiblecontrolserver.lab"
 vagrant up
 ```
 It should show successful ping upon completion.
